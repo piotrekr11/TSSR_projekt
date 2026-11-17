@@ -1,0 +1,76 @@
+\documentclass[a4paper,titleauthor]{mwart} 
+
+
+%---------------- Packages ----------------
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[hyphens]{url}
+\usepackage{authblk}
+\usepackage{tabularx}
+\usepackage[a4paper, left=2cm, right=2cm, top=3cm, bottom=3cm]{geometry}
+\usepackage{listings}
+\usepackage{placeins}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+% --- Uncomment depending on language choice ---
+\usepackage{polski}
+\usepackage[backend=biber,style=ieee,language=polish]{biblatex}
+% \usepackage[english]{babel}
+% \usepackage[backend=biber,style=ieee,language=english]{biblatex}
+\addbibresource{bib/literature.bib}
+
+\graphicspath{{imgs/}}
+
+\definecolor{vgreen}{RGB}{104,180,104}
+\definecolor{vblue}{RGB}{49,49,255}
+\definecolor{vorange}{RGB}{255,143,102}
+
+\raggedbottom
+
+%---------------- Listings ----------------
+\lstdefinestyle{verilog-style}{
+    language=Verilog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    numbers=left,
+    numberstyle=\tiny\color{black},
+    numbersep=10pt,
+    tabsize=8,
+}
+
+\lstset{
+    language=Matlab,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    breaklines=true,
+    frame=single
+}
+
+%---------------- Info ----------------
+\input{config/info.tex}
+
+%---------------- Document ----------------
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\input{contents/sections.tex}
+
+\printbibliography
+
+\end{document}
