@@ -72,32 +72,41 @@ signal = build_frame(config, preamble, symbols_gi);
 % OFDM Simulation - Receiver 
 % =========================================================================
 
-% % Detect frame start - ADAM
-% [frame_start, corr_vals] = detect_frame_start(config, signal);
-% 
-% % Estimate frequency offset - ADAM
-% ferror = estimate_frequency_offset(config, corr_vals, frame_start);
-% 
-% % Compensate frequency offset - ADAM
-% signal = compensate_frequency_offset(config, signal, ferror);
+% Detect frame start - ADAM
+[frame_start, corr_vals] = detect_frame_start(config, signal);
+
+% Estimate frequency offset - ADAM
+ferror = estimate_frequency_offset(config, corr_vals, frame_start);
+
+% Compensate frequency offset - ADAM
+signal = compensate_frequency_offset(config, signal, ferror);
+
+% Frame length (number of data OFDM symbols) known to the RX - PIOTR
+config.n_ofdm_symbols = payload.n_ofdm_symbols;
 
 % extract OFDM symbols - PIOTR
+symbols_gi_rx = extract_ofdm_symbols(config, signal, frame_start, preamble);
 
 % remove GI - PIOTR
+symbols_t_rx = remove_guard_interval(config, symbols_gi_rx);
 
 % OFDM demodulator  - PIOTR
+spectrum_os_rx = ofdm_demodulate(config, symbols_t_rx);
 
 % extract subcarriers - PIOTR
+grid_rx = extract_subcarriers(config, spectrum_os_rx);
 
 % estimate channel - PIOTR
+h_pilots = estimate_channel(config, grid_rx, pilots);
 
 % interpolate channel - PIOTR
+h_est = interpolate_channel(config, h_pilots);
 
 % equalize symbols - PIOTR
+data_symbols_rx = equalize_symbols(config, grid_rx, h_est);
 
 % qam demodulator - PIOTR
+payload_rx.bits = qam_demodulate(config, data_symbols_rx);
 
 % get payload back - ADAM
-% get_payload_rx(config, payload);
-
-
+[data_rx, config] = get_payload_rx(config, payload_rx);

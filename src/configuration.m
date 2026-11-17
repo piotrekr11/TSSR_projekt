@@ -96,3 +96,14 @@ config.peak_search_window = 2 * (config.fft_size + config.guard_interval_length)
 %% Frequency error estimation and compensation:
 config.sync_jump = config.fft_size * 4;
 config.sample_period = config.elementary_period / 4;
+
+%% Receiver parameters - PIOTR
+% Fine timing (extract_ofdm_symbols): the channel impulse response is
+% obtained from the preamble; the first path is the earliest lag with
+% |h| >= timing_path_threshold * max |h|.
+config.timing_path_threshold = 0.3;
+% The useful part is taken timing_backoff samples before its ideal start
+% (inside the GI), as a margin for the timing error. The channel
+% interpolation removes the resulting linear phase. Delay spread of the
+% channel must be smaller than gi_samples - timing_backoff.
+config.timing_backoff = config.gi_samples / 8;
